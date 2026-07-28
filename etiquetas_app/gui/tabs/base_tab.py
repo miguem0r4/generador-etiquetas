@@ -7,7 +7,6 @@ import customtkinter as ctk
 from ...core.models import AppConfig
 from ..widgets.log_panel import LogPanel
 from ..widgets.path_selector import PathSelector
-from ..widgets.tooltip import ToolTip
 
 
 class BaseTab(ctk.CTkFrame):
@@ -45,7 +44,6 @@ class BaseTab(ctk.CTkFrame):
 
         self.run_btn = ctk.CTkButton(self, text="Ejecutar", command=self._on_run_clicked)
         self.run_btn.grid(row=2, column=0, sticky="w", pady=(5, 5))
-        ToolTip(self.run_btn, "Iniciar el procesamiento con los archivos y parámetros seleccionados")
 
         self.progress_bar = ctk.CTkProgressBar(self)
         self.progress_bar.grid(row=3, column=0, sticky="ew", pady=(0, 5))

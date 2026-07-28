@@ -3,7 +3,6 @@ from typing import List, Optional, Tuple
 
 import customtkinter as ctk
 
-from .tooltip import ToolTip
 
 
 class PathSelector(ctk.CTkFrame):
@@ -35,7 +34,6 @@ class PathSelector(ctk.CTkFrame):
 
         self.btn = ctk.CTkButton(row, text="Examinar", width=100, height=32, command=self._browse)
         self.btn.grid(row=0, column=1)
-        ToolTip(self.btn, "Abrir explorador para seleccionar archivo o carpeta")
 
     def _browse(self) -> None:
         if self.is_folder:

@@ -7,7 +7,8 @@ from ..core.models import AppConfig
 from ..utils.config import load_config, save_config
 from .settings_dialog import SettingsDialog
 from .splash import AboutDialog, SplashWindow
-from .widgets.tooltip import ToolTip
+
+
 from .tabs.extract_tab import ExtractTab
 from .tabs.overlay_tab import OverlayTab
 from .tabs.split_tab import SplitTab
@@ -40,17 +41,13 @@ class App(ctk.CTk):
             top_frame, text="Generador de Etiquetas", font=("", 18, "bold")
         ).pack(side="left", padx=15)
 
-        btn_about = ctk.CTkButton(
+        ctk.CTkButton(
             top_frame, text="Acerca de", width=100, command=self._open_about,
-        )
-        btn_about.pack(side="right", padx=(0, 8))
-        ToolTip(btn_about, "Créditos y versión de la aplicación")
+        ).pack(side="right", padx=(0, 8))
 
-        btn_config = ctk.CTkButton(
+        ctk.CTkButton(
             top_frame, text="Configuración", width=120, command=self._open_settings,
-        )
-        btn_config.pack(side="right", padx=(0, 8))
-        ToolTip(btn_config, "Ajustar rutas predeterminadas, parámetros y tema visual")
+        ).pack(side="right", padx=(0, 8))
 
         self.tabview = ctk.CTkTabview(self)
         self.tabview.pack(fill="both", expand=True, padx=10, pady=10)

@@ -6,7 +6,6 @@ from ...core.models import AppConfig
 from ...core.overlay_pdf import overlay_pdf
 from ..widgets.overlay_preview import OverlayPreview
 from ..widgets.path_selector import PathSelector
-from ..widgets.tooltip import ToolTip
 from .base_tab import BaseTab
 
 
@@ -53,7 +52,6 @@ class OverlayTab(BaseTab):
 
         self.run_btn = ctk.CTkButton(self, text="Ejecutar", command=self._on_run_clicked)
         self.run_btn.grid(row=2, column=0, sticky="w", pady=(5, 5))
-        ToolTip(self.run_btn, "Inicia el proceso con los parámetros actuales")
 
         self.progress_bar = ctk.CTkProgressBar(self)
         self.progress_bar.grid(row=3, column=0, sticky="ew", pady=(0, 5))
@@ -71,39 +69,33 @@ class OverlayTab(BaseTab):
         self.img_scale_var = ctk.StringVar(value=str(self.config.overlay.image_scale))
         e = ctk.CTkEntry(pf, textvariable=self.img_scale_var, width=55)
         e.grid(row=r, column=1, sticky="w", padx=(0, 20))
-        ToolTip(e, "Factor de escala para la imagen superpuesta")
 
         ctk.CTkLabel(pf, text="Width:").grid(row=r, column=2, sticky="w", padx=(0, 5))
         self.img_width_var = ctk.StringVar(value=str(self.config.overlay.image_width))
         e = ctk.CTkEntry(pf, textvariable=self.img_width_var, width=55)
         e.grid(row=r, column=3, sticky="w")
-        ToolTip(e, "Ancho base de la imagen en puntos")
 
         r = 1
         ctk.CTkLabel(pf, text="Height:").grid(row=r, column=0, sticky="w", padx=(0, 5))
         self.img_height_var = ctk.StringVar(value=str(self.config.overlay.image_height))
         e = ctk.CTkEntry(pf, textvariable=self.img_height_var, width=55)
         e.grid(row=r, column=1, sticky="w", padx=(0, 20))
-        ToolTip(e, "Alto base de la imagen en puntos")
 
         ctk.CTkLabel(pf, text="Offset X:").grid(row=r, column=2, sticky="w", padx=(0, 5))
         self.offset_x_var = ctk.StringVar(value=str(self.config.overlay.offset_x))
         e = ctk.CTkEntry(pf, textvariable=self.offset_x_var, width=55)
         e.grid(row=r, column=3, sticky="w")
-        ToolTip(e, "Margen horizontal desde el borde derecho")
 
         r = 2
         ctk.CTkLabel(pf, text="Offset Y:").grid(row=r, column=0, sticky="w", padx=(0, 5))
         self.offset_y_var = ctk.StringVar(value=str(self.config.overlay.offset_y))
         e = ctk.CTkEntry(pf, textvariable=self.offset_y_var, width=55)
         e.grid(row=r, column=1, sticky="w", padx=(0, 20))
-        ToolTip(e, "Margen vertical desde el borde superior")
 
         ctk.CTkLabel(pf, text="Páginas por grupo:").grid(row=r, column=2, sticky="w", padx=(0, 5))
         self.ppg_var = ctk.StringVar(value=str(self.config.overlay.pages_per_group))
         e = ctk.CTkEntry(pf, textvariable=self.ppg_var, width=55)
         e.grid(row=r, column=3, sticky="w")
-        ToolTip(e, "Cantidad de páginas que forman cada documento (ej: 2 = anverso+reverso)")
 
         r = 3
         ctk.CTkLabel(
