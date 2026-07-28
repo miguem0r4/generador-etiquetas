@@ -91,14 +91,16 @@ class SplashWindow(ctk.CTkToplevel):
     def _on_timeout(self):
         self._fade_out()
 
-    def _fade_out(self):
+    def _fade_out(self, step=0):
         self._animating = False
-        try:
-            for a in [1.0, 0.8, 0.6, 0.4, 0.2, 0.0]:
-                self.after(int(50), lambda v=a: self.attributes("-alpha", v))
-                self.update()
-            self._close()
-        except Exception:
+        alpha = [1.0, 0.7, 0.4, 0.1, 0.0]
+        if step < len(alpha):
+            try:
+                self.attributes("-alpha", alpha[step])
+            except Exception:
+                pass
+            self.after(60, lambda: self._fade_out(step + 1))
+        else:
             self._close()
 
     def _close(self):

@@ -32,14 +32,14 @@ class CropPreview(ctk.CTkFrame):
         self.canvas.bind("<B1-Motion>", self._on_drag)
         self.canvas.bind("<ButtonRelease-1>", self._on_release)
 
-        self.lv.trace_add("write", lambda *_: self._draw())
-        self.tv.trace_add("write", lambda *_: self._draw())
-        self.rv.trace_add("write", lambda *_: self._draw())
-        self.bv.trace_add("write", lambda *_: self._draw())
+        self.lv.trace_add("write", lambda *_: self._render_preview())
+        self.tv.trace_add("write", lambda *_: self._render_preview())
+        self.rv.trace_add("write", lambda *_: self._render_preview())
+        self.bv.trace_add("write", lambda *_: self._render_preview())
 
-        self._draw()
+        self._render_preview()
 
-    def _draw(self):
+    def _render_preview(self):
         c = self.canvas
         c.delete("all")
 
@@ -107,18 +107,22 @@ class CropPreview(ctk.CTkFrame):
         if not self._drag_edge:
             return
         pw, ph = self.PAGE_W, self.PAGE_H
+        _, _, start_l, start_t, start_r, start_b = self._drag_start
         dx = (event.x - self._drag_start[0]) / pw
         dy = (event.y - self._drag_start[1]) / ph
 
         if self._drag_edge == "L":
-            val = max(0.0, min(self._drag_start[3], self._drag_start[2] - 0.01))
-            self.lv.set(min(self._drag_start[2] - 0.02, max(0.0, self._drag_start[2] + dx)))
+            val = max(0.0, min(start_r - 0.02, start_l + dx))
+            self.lv.set(val)
         elif self._drag_edge == "R":
-            self.rv.set(max(self._drag_start[2] + 0.02, min(1.0, self._drag_start[4] + dx)))
+            val = max(start_l + 0.02, min(1.0, start_r + dx))
+            self.rv.set(val)
         elif self._drag_edge == "T":
-            self.tv.set(max(0.0, min(self._drag_start[4], self._drag_start[3] - 0.01)))
+            val = max(0.0, min(start_b - 0.02, start_t + dy))
+            self.tv.set(val)
         elif self._drag_edge == "B":
-            self.bv.set(max(self._drag_start[3] + 0.02, min(1.0, self._drag_start[5] + dy)))
+            val = max(start_t + 0.02, min(1.0, start_b + dy))
+            self.bv.set(val)
 
     def _on_release(self, event):
         self._drag_edge = None
