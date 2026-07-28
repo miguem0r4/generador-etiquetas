@@ -51,7 +51,9 @@ class App(ctk.CTk):
         ]
         for name, tab_class in tab_defs:
             frame = self.tabview.add(name)
-            self.tabs[name] = tab_class(frame, self.config)
+            tab = tab_class(frame, self.config)
+            tab.pack(fill="both", expand=True)
+            self.tabs[name] = tab
 
     def _open_settings(self) -> None:
         def on_saved(cfg: AppConfig) -> None:
