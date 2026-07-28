@@ -29,3 +29,6 @@ Thumbs.db
 *.xls
 *.png
 output/
+
+# Allow example files to be tracked
+!ejemplo_nombres.xlsx

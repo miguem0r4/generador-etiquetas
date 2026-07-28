@@ -30,6 +30,10 @@ Pasos:
 4. Ajustar parámetros si es necesario
 5. Click **"Ejecutar"**
 
+## Archivo de ejemplo
+
+En el repositorio incluimos [`ejemplo_nombres.xlsx`](ejemplo_nombres.xlsx) con nombres de muestra para probar el programa. El Excel debe tener los nombres en la columna A, sin encabezado (el programa ignora la primera fila si es texto).
+
 ## Si querés correr desde el código fuente
 
 ```bash
