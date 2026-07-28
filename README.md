@@ -1,119 +1,52 @@
 # Generador de Etiquetas
 
+![Build](https://github.com/miguem0r4/generador-etiquetas/actions/workflows/build.yml/badge.svg)
+[![Download](https://img.shields.io/github/v/release/miguem0r4/generador-etiquetas)](https://github.com/miguem0r4/generador-etiquetas/releases/latest)
+
 Procesamiento de PDFs con datos desde Excel: extracción de imágenes, división de PDFs e inserción de overlays.
 
-## Requisitos
+## Descargar ejecutable (recomendado)
 
-- Python 3.10+
-- pip
+**No requiere Python ni instalar nada.** Solo descargar y ejecutar.
 
-## Instalación
+1. Ir a [Releases](https://github.com/miguem0r4/generador-etiquetas/releases/latest)
+2. Descargar:
+   - **Windows**: `GeneradorEtiquetas.exe`
+   - **Linux**: `GeneradorEtiquetas` (dar permisos: `chmod +x GeneradorEtiquetas`)
+3. Ejecutar el archivo descargado
+
+## Cómo usar
+
+| Pestaña | Qué hace |
+|---|---|
+| **Extraer Imágenes** | Recorta la esquina superior derecha de cada página del PDF y guarda cada recorte como PNG con el nombre indicado en el Excel |
+| **Dividir PDF** | Agrupa páginas del PDF de a pares y guarda cada par como un PDF independiente nombrado desde el Excel |
+| **Insertar Overlays** | Superpone una imagen en la primera página de cada par del PDF |
+
+Pasos:
+1. Abrir el programa
+2. Seleccionar pestaña según lo que necesites
+3. Click **"Examinar"** para elegir PDF, Excel y carpeta de salida
+4. Ajustar parámetros si es necesario
+5. Click **"Ejecutar"**
+
+## Si querés correr desde el código fuente
 
 ```bash
-git clone <repo>
-cd etiquetas
-python -m venv .venv
-source .venv/bin/activate   # Linux/Mac
-# .venv\Scripts\activate    # Windows
+git clone https://github.com/miguem0r4/generador-etiquetas.git
+cd generador-etiquetas
 pip install -r requirements.txt
-```
-
-## Uso
-
-### Interfaz gráfica
-
-```bash
 python main.py
 ```
 
-Tres pestañas:
-- **Extraer Imágenes** — extrae recortes de cada página del PDF y los guarda como PNG nombrados desde el Excel
-- **Dividir PDF** — agrupa páginas del PDF en pares y guarda cada grupo como PDF independiente
-- **Insertar Overlays** — superpone una imagen (PNG) en la primera página de cada par del PDF
-
-Todos los parámetros (ratios de recorte, escalas, offsets, etc.) se configuran desde la misma interfaz en cada pestaña, o globalmente desde el botón **Configuración**.
-
-### Línea de comandos
+También funciona por línea de comandos:
 
 ```bash
-# Extraer imágenes
 python main.py --cli --mode extract --pdf documento.pdf --excel nombres.xlsx --output ./salida
-
-# Dividir PDF en pares
-python main.py --cli --mode split --pdf documento.pdf --excel nombres.xlsx --output ./salida
-
-# Insertar overlays
+python main.py --cli --mode split   --pdf documento.pdf --excel nombres.xlsx --output ./salida
 python main.py --cli --mode overlay --pdf documento.pdf --excel nombres.xlsx --images ./imagenes --output ./salida
-
-# Usar un archivo de configuración específico
-python main.py --cli --mode extract --pdf in.pdf --excel in.xlsx --output ./out --config ./mi-config.yaml
-```
-
-### Ayuda
-
-```bash
-python main.py --help
-```
-
-## Estructura del proyecto
-
-```
-etiquetas/
-├── main.py                        # Entry point (GUI | CLI)
-├── config.yaml                    # Configuración por defecto
-├── requirements.txt               # Dependencias
-├── GeneradorEtiquetas.spec        # PyInstaller spec
-└── etiquetas_app/
-    ├── core/                      # Lógica de negocio
-    │   ├── models.py              # Dataclasses configurables
-    │   ├── excel_reader.py        # Lectura compartida de Excel
-    │   ├── extract_images.py      # Extracción de imágenes
-    │   ├── split_pdf.py           # División de PDF
-    │   └── overlay_pdf.py         # Inserción de overlays
-    ├── gui/                       # Interfaz gráfica (customtkinter)
-    │   ├── app.py                 # Ventana principal
-    │   ├── settings_dialog.py     # Diálogo de configuración
-    │   ├── tabs/                  # Pestañas por funcionalidad
-    │   └── widgets/               # Componentes reutilizables
-    └── utils/
-        ├── config.py              # Carga/guardado de config YAML
-        └── validators.py          # Validación de rutas
 ```
 
 ## Configuración
 
-La configuración se guarda en `~/.config/etiquetas/config.yaml` y se edita desde el botón **Configuración** de la GUI. También puede editarse manualmente:
-
-```yaml
-paths:
-  default_output: ~/Downloads/ETIQUETAS
-  images_folder: ~/Downloads/IMAGENES ETIQUETAS
-
-extract:
-  crop_left_ratio: 0.64
-  crop_top_ratio: 0.0
-  crop_right_ratio: 1.0
-  crop_bottom_ratio: 0.13
-  render_scale: 3
-
-overlay:
-  image_scale: 2
-  image_width: 100
-  image_height: 50
-  offset_x: 10
-  offset_y: 10
-
-split:
-  pages_per_group: 2
-
-theme: dark
-```
-
-## Empaquetar como ejecutable
-
-```bash
-pip install pyinstaller
-pyinstaller GeneradorEtiquetas.spec
-```
-
-El ejecutable se generará en `dist/GeneradorEtiquetas`.
+La configuración se guarda en `~/.config/etiquetas/config.yaml` y se edita desde el botón **Configuración** de la GUI.
