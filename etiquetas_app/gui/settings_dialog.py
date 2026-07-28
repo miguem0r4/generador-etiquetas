@@ -94,6 +94,7 @@ class SettingsDialog(ctk.CTkToplevel):
                 ("Image height:", "image_height"),
                 ("Offset X:", "offset_x"),
                 ("Offset Y:", "offset_y"),
+                ("Páginas por grupo:", "pages_per_group"),
             ]
         ):
             ctk.CTkLabel(parent, text=label).grid(row=i, column=0, sticky="w", padx=5, pady=3)
@@ -134,7 +135,7 @@ class SettingsDialog(ctk.CTkToplevel):
             if var:
                 var.set(str(getattr(defaults.extract, key)))
 
-        for key in ["image_scale", "image_width", "image_height", "offset_x", "offset_y"]:
+        for key in ["image_scale", "image_width", "image_height", "offset_x", "offset_y", "pages_per_group"]:
             var = getattr(self, f"overlay_{key}_var", None)
             if var:
                 var.set(str(getattr(defaults.overlay, key)))
@@ -160,6 +161,7 @@ class SettingsDialog(ctk.CTkToplevel):
             image_height=int(self._get_var("overlay_image_height_var")),
             offset_x=int(self._get_var("overlay_offset_x_var")),
             offset_y=int(self._get_var("overlay_offset_y_var")),
+            pages_per_group=int(self._get_var("overlay_pages_per_group_var")),
         )
 
         self.config.split = SplitConfig(

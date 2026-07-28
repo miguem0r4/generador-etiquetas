@@ -49,6 +49,7 @@ class OverlayConfig:
     image_height: int = 50
     offset_x: int = 10
     offset_y: int = 10
+    pages_per_group: int = 2
 
     def to_dict(self) -> dict:
         return {
@@ -57,6 +58,7 @@ class OverlayConfig:
             "image_height": self.image_height,
             "offset_x": self.offset_x,
             "offset_y": self.offset_y,
+            "pages_per_group": self.pages_per_group,
         }
 
     @classmethod
@@ -67,6 +69,7 @@ class OverlayConfig:
             image_height=int(data.get("image_height", 50)),
             offset_x=int(data.get("offset_x", 10)),
             offset_y=int(data.get("offset_y", 10)),
+            pages_per_group=int(data.get("pages_per_group", 2)),
         )
 
 

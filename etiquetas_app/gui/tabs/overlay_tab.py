@@ -5,6 +5,7 @@ import customtkinter as ctk
 from ...core.models import AppConfig
 from ...core.overlay_pdf import overlay_pdf
 from ..widgets.path_selector import PathSelector
+from ..widgets.tooltip import ToolTip
 from .base_tab import BaseTab
 
 
@@ -36,6 +37,7 @@ class OverlayTab(BaseTab):
 
         self.run_btn = ctk.CTkButton(self, text="Ejecutar", command=self._on_run_clicked)
         self.run_btn.grid(row=2, column=0, sticky="w", pady=(5, 5))
+        ToolTip(self.run_btn, "Inicia el proceso con los parámetros actuales")
 
         self.progress_bar = ctk.CTkProgressBar(self)
         self.progress_bar.grid(row=3, column=0, sticky="ew", pady=(0, 5))
@@ -51,25 +53,41 @@ class OverlayTab(BaseTab):
         r = 0
         ctk.CTkLabel(pf, text="Image scale:").grid(row=r, column=0, sticky="w", padx=(0, 5))
         self.img_scale_var = ctk.StringVar(value=str(self.config.overlay.image_scale))
-        ctk.CTkEntry(pf, textvariable=self.img_scale_var, width=55).grid(row=r, column=1, sticky="w", padx=(0, 20))
+        e = ctk.CTkEntry(pf, textvariable=self.img_scale_var, width=55)
+        e.grid(row=r, column=1, sticky="w", padx=(0, 20))
+        ToolTip(e, "Factor de escala para la imagen superpuesta")
 
         ctk.CTkLabel(pf, text="Width:").grid(row=r, column=2, sticky="w", padx=(0, 5))
         self.img_width_var = ctk.StringVar(value=str(self.config.overlay.image_width))
-        ctk.CTkEntry(pf, textvariable=self.img_width_var, width=55).grid(row=r, column=3, sticky="w")
+        e = ctk.CTkEntry(pf, textvariable=self.img_width_var, width=55)
+        e.grid(row=r, column=3, sticky="w")
+        ToolTip(e, "Ancho base de la imagen en puntos")
 
         r = 1
         ctk.CTkLabel(pf, text="Height:").grid(row=r, column=0, sticky="w", padx=(0, 5))
         self.img_height_var = ctk.StringVar(value=str(self.config.overlay.image_height))
-        ctk.CTkEntry(pf, textvariable=self.img_height_var, width=55).grid(row=r, column=1, sticky="w", padx=(0, 20))
+        e = ctk.CTkEntry(pf, textvariable=self.img_height_var, width=55)
+        e.grid(row=r, column=1, sticky="w", padx=(0, 20))
+        ToolTip(e, "Alto base de la imagen en puntos")
 
         ctk.CTkLabel(pf, text="Offset X:").grid(row=r, column=2, sticky="w", padx=(0, 5))
         self.offset_x_var = ctk.StringVar(value=str(self.config.overlay.offset_x))
-        ctk.CTkEntry(pf, textvariable=self.offset_x_var, width=55).grid(row=r, column=3, sticky="w")
+        e = ctk.CTkEntry(pf, textvariable=self.offset_x_var, width=55)
+        e.grid(row=r, column=3, sticky="w")
+        ToolTip(e, "Margen horizontal desde el borde derecho")
 
         r = 2
         ctk.CTkLabel(pf, text="Offset Y:").grid(row=r, column=0, sticky="w", padx=(0, 5))
         self.offset_y_var = ctk.StringVar(value=str(self.config.overlay.offset_y))
-        ctk.CTkEntry(pf, textvariable=self.offset_y_var, width=55).grid(row=r, column=1, sticky="w")
+        e = ctk.CTkEntry(pf, textvariable=self.offset_y_var, width=55)
+        e.grid(row=r, column=1, sticky="w", padx=(0, 20))
+        ToolTip(e, "Margen vertical desde el borde superior")
+
+        ctk.CTkLabel(pf, text="Páginas por grupo:").grid(row=r, column=2, sticky="w", padx=(0, 5))
+        self.ppg_var = ctk.StringVar(value=str(self.config.overlay.pages_per_group))
+        e = ctk.CTkEntry(pf, textvariable=self.ppg_var, width=55)
+        e.grid(row=r, column=3, sticky="w")
+        ToolTip(e, "Cantidad de páginas que forman cada documento (ej: 2 = anverso+reverso)")
 
     def _validate_paths(self) -> bool:
         if not super()._validate_paths():
@@ -86,6 +104,7 @@ class OverlayTab(BaseTab):
             "image_height": int(self.img_height_var.get()),
             "offset_x": int(self.offset_x_var.get()),
             "offset_y": int(self.offset_y_var.get()),
+            "pages_per_group": int(self.ppg_var.get()),
         }
 
     def _run_task(self, pdf: str, excel: str, output: str, params: dict) -> None:
@@ -100,6 +119,7 @@ class OverlayTab(BaseTab):
             cfg.image_height = params["image_height"]
             cfg.offset_x = params["offset_x"]
             cfg.offset_y = params["offset_y"]
+            cfg.pages_per_group = params["pages_per_group"]
 
             output_dir = Path(output)
             output_dir.mkdir(parents=True, exist_ok=True)
@@ -118,3 +138,4 @@ class OverlayTab(BaseTab):
         self.img_height_var.set(str(config.overlay.image_height))
         self.offset_x_var.set(str(config.overlay.offset_x))
         self.offset_y_var.set(str(config.overlay.offset_y))
+        self.ppg_var.set(str(config.overlay.pages_per_group))

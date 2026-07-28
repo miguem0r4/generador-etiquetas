@@ -42,7 +42,7 @@ def overlay_pdf(
 ) -> dict:
     reader = PdfReader(str(pdf_path))
     total_paginas = len(reader.pages)
-    ppg = 2
+    ppg = config.pages_per_group
     total_groups = (total_paginas + ppg - 1) // ppg
     results: dict = {"success": 0, "errors": 0, "skipped": 0, "total": total_groups, "details": []}
 
