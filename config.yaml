@@ -1,0 +1,22 @@
+paths:
+  default_output: ~/Downloads/ETIQUETAS
+  images_folder: ~/Downloads/IMAGENES ETIQUETAS
+
+extract:
+  crop_left_ratio: 0.64
+  crop_top_ratio: 0.0
+  crop_right_ratio: 1.0
+  crop_bottom_ratio: 0.13
+  render_scale: 3
+
+overlay:
+  image_scale: 2
+  image_width: 100
+  image_height: 50
+  offset_x: 10
+  offset_y: 10
+
+split:
+  pages_per_group: 2
+
+theme: dark
