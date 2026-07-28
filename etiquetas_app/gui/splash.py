@@ -3,20 +3,15 @@ from typing import Optional
 
 import customtkinter as ctk
 
+from .widgets.icons import github_icon
+
 APP_NAME = "Generador de Etiquetas"
-VERSION = "v1.5.0"
+VERSION = "v1.6.0"
 AUTHOR = "@miguem0r4"
 GITHUB_URL = "https://github.com/miguem0r4"
 EMAIL = "ingmigmora@gmail.com"
 MAILTO_URL = f"mailto:{EMAIL}"
 TAGLINE = "PDFs + Excel  →  Imágenes  ·  Divisiones  ·  Overlays"
-
-_ASCII_LOGO = """
-█▀▀ ▀▄▀ █▀▀ █▄ █ ▀█▀ █ █ █▀▀ █   █
-█▄▄  █  ██▄ █ ▀█  █  █▄█ ██▄ █▄▄ █▄▄
-"""
-
-_ASCII_PDF = "  📄 ✂ 🖼   v1.5.0"
 
 
 def _make_link(label: ctk.CTkLabel, url: str) -> None:
@@ -46,13 +41,12 @@ class SplashWindow(ctk.CTkToplevel):
         super().__init__(parent)
         self._close_after = 4000
         self._animating = True
-        self._current_ascii = 0
 
         self.overrideredirect(True)
         self.transient(parent)
         self.grab_set()
 
-        w, h = 440, 350
+        w, h = 400, 300
         pw, ph = parent.winfo_width(), parent.winfo_height()
         px, py = parent.winfo_x(), parent.winfo_y()
         x = px + (pw - w) // 2
@@ -64,46 +58,44 @@ class SplashWindow(ctk.CTkToplevel):
         main = ctk.CTkFrame(self, fg_color="transparent")
         main.pack(expand=True, fill="both", padx=25, pady=20)
 
-        ascii_lines = [
-            "█▀▀ █ █ █▀▄▀█ █▀▀ █   █",
-            "█ █ █ █ █ ▀ █ ██▄ █▄▄ █",
-            "▀▀▀ ▀▀▀ ▀   ▀ ▀▀▀ █▄▄█",
-        ]
-        for line in ascii_lines:
-            ctk.CTkLabel(
-                main, text=line, font=("Courier", 14, "bold"),
-                text_color=("#1a6d1a", "#4CAF50"),
-            ).pack(anchor="center")
+        ctk.CTkLabel(
+            main, text=APP_NAME, font=("", 22, "bold"),
+            text_color=("#1a1a1a", "#e0e0e0"),
+        ).pack(anchor="center")
 
         ctk.CTkLabel(
             main, text=TAGLINE, font=("", 10),
             text_color=("#666666", "#888888"),
-        ).pack(anchor="center", pady=(6, 10))
+        ).pack(anchor="center", pady=(2, 12))
 
         sep = ctk.CTkFrame(main, height=2, fg_color=("#cccccc", "#333355"))
-        sep.pack(fill="x", padx=10, pady=(0, 12))
+        sep.pack(fill="x", padx=10, pady=(0, 14))
 
         ctk.CTkLabel(
             main, text="Desarrollado por", font=("", 11, "italic"),
             text_color=("#888888", "#999999"),
         ).pack(anchor="center")
 
+        gh_row = ctk.CTkFrame(main, fg_color="transparent")
+        gh_row.pack(anchor="center", pady=(6, 0))
+        icon = github_icon(18)
+        ctk.CTkLabel(gh_row, image=icon, text="").pack(side="left", padx=(0, 6))
         link_author = ctk.CTkLabel(
-            main, text=f"github.com/{AUTHOR}", font=("", 13, "bold"),
+            gh_row, text=f"github.com/{AUTHOR}", font=("", 13, "bold"),
             text_color=("#1a6d1a", "#4CAF50"),
         )
-        link_author.pack(anchor="center", pady=(4, 0))
+        link_author.pack(side="left")
         _make_link(link_author, GITHUB_URL)
 
         link_email = ctk.CTkLabel(
             main, text=EMAIL, font=("", 11, "underline"),
             text_color=("#555555", "#aaaaaa"),
         )
-        link_email.pack(anchor="center", pady=(0, 0))
+        link_email.pack(anchor="center", pady=(2, 0))
         _make_link(link_email, MAILTO_URL)
 
         sep2 = ctk.CTkFrame(main, height=1, fg_color=("#dddddd", "#444466"))
-        sep2.pack(fill="x", padx=30, pady=(10, 4))
+        sep2.pack(fill="x", padx=30, pady=(12, 6))
 
         self._status_label = ctk.CTkLabel(
             main, text="", font=("", 13),
@@ -118,7 +110,6 @@ class SplashWindow(ctk.CTkToplevel):
         self._version_label.pack(anchor="center")
 
         self._phase = 0
-
         self.after(200, self._animate_entry)
 
         self.bind("<Button-1>", lambda e: self._close())
@@ -169,7 +160,7 @@ class AboutDialog(ctk.CTkToplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.title("Acerca de")
-        self.geometry("380x340")
+        self.geometry("360x300")
         self.transient(parent)
         self.grab_set()
         self.resizable(False, False)
@@ -179,52 +170,46 @@ class AboutDialog(ctk.CTkToplevel):
         main = ctk.CTkFrame(self, fg_color="transparent")
         main.pack(expand=True, fill="both", padx=25, pady=20)
 
-        ascii_lines = [
-            "█▀▀ ▄▀▄ █▀▀ █   █▀▀",
-            "█▄▄ █ █ ██▄ █▄▄ ██▄",
-        ]
-        for line in ascii_lines:
-            ctk.CTkLabel(
-                main, text=line, font=("Courier", 13, "bold"),
-                text_color=("#1a6d1a", "#4CAF50"),
-            ).pack(anchor="center")
+        ctk.CTkLabel(
+            main, text=APP_NAME, font=("", 20, "bold"),
+        ).pack(anchor="center")
 
         ctk.CTkLabel(
-            main, text="Generador de Etiquetas", font=("", 18, "bold"),
-        ).pack(anchor="center")
+            main, text=VERSION, font=("", 11),
+            text_color=("#888888", "#888888"),
+        ).pack(anchor="center", pady=(0, 6))
 
         ctk.CTkLabel(
             main, text=TAGLINE, font=("", 10),
             text_color=("#666666", "#999999"),
-        ).pack(anchor="center", pady=(0, 8))
+        ).pack(anchor="center")
 
         sep = ctk.CTkFrame(main, height=1, fg_color=("#cccccc", "#444466"))
-        sep.pack(fill="x", padx=10, pady=(0, 10))
+        sep.pack(fill="x", padx=10, pady=(10, 10))
 
         ctk.CTkLabel(
             main, text="Desarrollado por", font=("", 11),
             text_color=("#888888", "#999999"),
         ).pack(anchor="center")
 
+        gh_row = ctk.CTkFrame(main, fg_color="transparent")
+        gh_row.pack(anchor="center", pady=(6, 0))
+        icon = github_icon(18)
+        ctk.CTkLabel(gh_row, image=icon, text="").pack(side="left", padx=(0, 6))
         link_author = ctk.CTkLabel(
-            main, text=f"github.com/{AUTHOR}", font=("", 14, "bold"),
+            gh_row, text=f"github.com/{AUTHOR}", font=("", 14, "bold"),
             text_color=("#1a6d1a", "#4CAF50"),
         )
-        link_author.pack(anchor="center", pady=(3, 0))
+        link_author.pack(side="left")
         _make_link(link_author, GITHUB_URL)
 
         link_email = ctk.CTkLabel(
             main, text=EMAIL, font=("", 11, "underline"),
             text_color=("#555555", "#aaaaaa"),
         )
-        link_email.pack(anchor="center", pady=(0, 0))
+        link_email.pack(anchor="center", pady=(2, 0))
         _make_link(link_email, MAILTO_URL)
-
-        ctk.CTkLabel(
-            main, text=f"Versión: {VERSION}", font=("", 10),
-            text_color=("#888888", "#888888"),
-        ).pack(anchor="center", pady=(8, 0))
 
         ctk.CTkButton(
             main, text="Cerrar", width=100, command=self.destroy,
-        ).pack(anchor="center", pady=(12, 0))
+        ).pack(anchor="center", pady=(14, 0))
