@@ -6,6 +6,7 @@ import customtkinter as ctk
 from ..core.models import AppConfig
 from ..utils.config import load_config, save_config
 from .settings_dialog import SettingsDialog
+from .splash import AboutDialog, SplashWindow
 from .tabs.extract_tab import ExtractTab
 from .tabs.overlay_tab import OverlayTab
 from .tabs.split_tab import SplitTab
@@ -27,6 +28,8 @@ class App(ctk.CTk):
         self._build_ui()
         self.protocol("WM_DELETE_WINDOW", self._on_close)
 
+        self.after(150, self._show_splash)
+
     def _build_ui(self) -> None:
         top_frame = ctk.CTkFrame(self, height=44, corner_radius=0)
         top_frame.pack(fill="x", padx=0, pady=(0, 0))
@@ -37,8 +40,12 @@ class App(ctk.CTk):
         ).pack(side="left", padx=15)
 
         ctk.CTkButton(
-            top_frame, text="Configuración", command=self._open_settings, width=120
-        ).pack(side="right", padx=15)
+            top_frame, text="Acerca de", width=100, command=self._open_about,
+        ).pack(side="right", padx=(0, 8))
+
+        ctk.CTkButton(
+            top_frame, text="Configuración", width=120, command=self._open_settings,
+        ).pack(side="right", padx=(0, 8))
 
         self.tabview = ctk.CTkTabview(self)
         self.tabview.pack(fill="both", expand=True, padx=10, pady=10)
@@ -54,6 +61,12 @@ class App(ctk.CTk):
             tab = tab_class(frame, self.config)
             tab.pack(fill="both", expand=True)
             self.tabs[name] = tab
+
+    def _show_splash(self) -> None:
+        SplashWindow(self)
+
+    def _open_about(self) -> None:
+        AboutDialog(self)
 
     def _open_settings(self) -> None:
         def on_saved(cfg: AppConfig) -> None:
