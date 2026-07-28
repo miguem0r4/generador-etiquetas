@@ -21,7 +21,7 @@ Procesamiento de PDFs con datos desde Excel: extracción de imágenes, división
 |---|---|
 | **Extraer Imágenes** | Recorta la esquina superior derecha de cada página del PDF y guarda cada recorte como PNG con el nombre indicado en el Excel |
 | **Dividir PDF** | Agrupa páginas del PDF de a pares y guarda cada par como un PDF independiente nombrado desde el Excel |
-| **Insertar Overlays** | Superpone una imagen en la primera página de cada par del PDF |
+| **Insertar Etiquetas** | Pega una imagen (etiqueta/logo) en la esquina superior derecha de la primera página de cada par del PDF. Útil para estampar un sello o logo antes de separar los documentos |
 
 Pasos:
 1. Abrir el programa

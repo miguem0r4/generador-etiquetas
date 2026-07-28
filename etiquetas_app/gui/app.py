@@ -54,7 +54,7 @@ class App(ctk.CTk):
         tab_defs = [
             ("Extraer Imágenes", ExtractTab),
             ("Dividir PDF", SplitTab),
-            ("Insertar Overlays", OverlayTab),
+            ("Insertar Etiquetas", OverlayTab),
         ]
         for name, tab_class in tab_defs:
             frame = self.tabview.add(name)
