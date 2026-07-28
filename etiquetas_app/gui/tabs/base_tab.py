@@ -24,7 +24,7 @@ class BaseTab(ctk.CTkFrame):
         self._build_params()
 
     def _build_common_ui(self) -> None:
-        self._paths_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self._paths_frame = ctk.CTkFrame(self)
         self._paths_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
         self._paths_frame.columnconfigure(0, weight=1)
 
@@ -39,7 +39,7 @@ class BaseTab(ctk.CTkFrame):
         self.output_selector = PathSelector(self._paths_frame, "Carpeta de salida", is_folder=True)
         self.output_selector.grid(row=2, column=0, sticky="ew", pady=(0, 3))
 
-        self._params_frame = ctk.CTkFrame(self, fg_color="transparent")
+        self._params_frame = ctk.CTkFrame(self)
         self._params_frame.grid(row=1, column=0, sticky="ew", pady=(0, 5))
 
         self.run_btn = ctk.CTkButton(self, text="Ejecutar", command=self._on_run_clicked)

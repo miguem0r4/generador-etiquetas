@@ -1,4 +1,3 @@
-from pathlib import Path
 from tkinter import filedialog
 from typing import List, Optional, Tuple
 
@@ -20,19 +19,20 @@ class PathSelector(ctk.CTkFrame):
         self._path: str = ""
         self._label_text = label
 
-        self.columnconfigure(1, weight=1)
+        self.columnconfigure(0, weight=1)
 
-        ctk.CTkLabel(self, text=label, anchor="w").grid(
-            row=0, column=0, columnspan=2, sticky="w", pady=(0, 2)
-        )
+        ctk.CTkLabel(self, text=label, anchor="w").pack(fill="x", pady=(0, 2))
 
-        self.entry = ctk.CTkEntry(self)
-        self.entry.grid(row=1, column=0, sticky="ew", padx=(0, 5))
+        row = ctk.CTkFrame(self, fg_color="transparent")
+        row.pack(fill="x")
+        row.columnconfigure(0, weight=1)
+
+        self.entry = ctk.CTkEntry(row)
+        self.entry.grid(row=0, column=0, sticky="ew", padx=(0, 6))
         self.entry.configure(state="readonly")
 
-        ctk.CTkButton(self, text="Examinar", width=90, command=self._browse).grid(
-            row=1, column=1, padx=(0, 0)
-        )
+        self.btn = ctk.CTkButton(row, text="Examinar", width=100, height=32, command=self._browse)
+        self.btn.grid(row=0, column=1)
 
     def _browse(self) -> None:
         if self.is_folder:
