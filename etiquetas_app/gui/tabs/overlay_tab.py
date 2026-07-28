@@ -4,6 +4,7 @@ import customtkinter as ctk
 
 from ...core.models import AppConfig
 from ...core.overlay_pdf import overlay_pdf
+from ..widgets.overlay_preview import OverlayPreview
 from ..widgets.path_selector import PathSelector
 from ..widgets.tooltip import ToolTip
 from .base_tab import BaseTab
@@ -16,7 +17,6 @@ class OverlayTab(BaseTab):
     def _build_common_ui(self) -> None:
         self._paths_frame = ctk.CTkFrame(self)
         self._paths_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
-        self._paths_frame.columnconfigure(0, weight=1)
 
         self.pdf_selector = PathSelector(self._paths_frame, "PDF de entrada", filetypes=[("Archivos PDF", "*.pdf")])
         self.pdf_selector.grid(row=0, column=0, sticky="ew", pady=(0, 3))
@@ -32,8 +32,24 @@ class OverlayTab(BaseTab):
         self.output_selector = PathSelector(self._paths_frame, "Carpeta de salida", is_folder=True)
         self.output_selector.grid(row=3, column=0, sticky="ew", pady=(0, 3))
 
-        self._params_frame = ctk.CTkFrame(self)
-        self._params_frame.grid(row=1, column=0, sticky="ew", pady=(0, 5))
+        self._middle_frame = ctk.CTkFrame(self)
+        self._middle_frame.grid(row=1, column=0, sticky="nsew", pady=(0, 5))
+        self._middle_frame.columnconfigure(0, weight=0)
+        self._middle_frame.columnconfigure(1, weight=0)
+
+        self._params_frame = ctk.CTkFrame(self._middle_frame)
+        self._params_frame.grid(row=0, column=0, sticky="ns", padx=(0, 10))
+
+        self._build_params()
+
+        self._preview_frame = ctk.CTkFrame(self._middle_frame)
+        self._preview_frame.grid(row=0, column=1, sticky="ns")
+        self.overlay_preview = OverlayPreview(
+            self._preview_frame,
+            self.offset_x_var, self.offset_y_var,
+            self.img_width_var, self.img_height_var, self.img_scale_var,
+        )
+        self.overlay_preview.pack()
 
         self.run_btn = ctk.CTkButton(self, text="Ejecutar", command=self._on_run_clicked)
         self.run_btn.grid(row=2, column=0, sticky="w", pady=(5, 5))
@@ -88,6 +104,12 @@ class OverlayTab(BaseTab):
         e = ctk.CTkEntry(pf, textvariable=self.ppg_var, width=55)
         e.grid(row=r, column=3, sticky="w")
         ToolTip(e, "Cantidad de páginas que forman cada documento (ej: 2 = anverso+reverso)")
+
+        r = 3
+        ctk.CTkLabel(
+            pf, text="Arrastrá la imagen en la vista\nprevia para ajustar posición.",
+            font=("", 10), text_color="gray",
+        ).grid(row=r, column=0, columnspan=4, sticky="w", pady=(10, 0))
 
     def _validate_paths(self) -> bool:
         if not super()._validate_paths():
