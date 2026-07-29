@@ -14,7 +14,15 @@ class OverlayTab(BaseTab):
         super().__init__(parent, config, **kwargs)
 
     def _build_common_ui(self) -> None:
-        self._paths_frame = ctk.CTkFrame(self)
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(4, weight=1)
+
+        scroll = ctk.CTkScrollableFrame(self, fg_color="transparent")
+        scroll.grid(row=0, column=0, sticky="nsew")
+        scroll.columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
+
+        self._paths_frame = ctk.CTkFrame(scroll)
         self._paths_frame.grid(row=0, column=0, sticky="ew", pady=(0, 5))
 
         self.pdf_selector = PathSelector(self._paths_frame, "PDF de entrada", filetypes=[("Archivos PDF", "*.pdf")])
@@ -31,7 +39,7 @@ class OverlayTab(BaseTab):
         self.output_selector = PathSelector(self._paths_frame, "Carpeta de salida", is_folder=True)
         self.output_selector.grid(row=3, column=0, sticky="ew", pady=(0, 3))
 
-        self._middle_frame = ctk.CTkFrame(self)
+        self._middle_frame = ctk.CTkFrame(scroll)
         self._middle_frame.grid(row=1, column=0, sticky="nsew", pady=(0, 5))
         self._middle_frame.columnconfigure(0, weight=0)
         self._middle_frame.columnconfigure(1, weight=0)
@@ -50,15 +58,15 @@ class OverlayTab(BaseTab):
         )
         self.overlay_preview.pack()
 
-        self.run_btn = ctk.CTkButton(self, text="Ejecutar", command=self._on_run_clicked)
+        self.run_btn = ctk.CTkButton(scroll, text="Ejecutar", command=self._on_run_clicked)
         self.run_btn.grid(row=2, column=0, sticky="w", pady=(5, 5))
 
-        self.progress_bar = ctk.CTkProgressBar(self)
+        self.progress_bar = ctk.CTkProgressBar(scroll)
         self.progress_bar.grid(row=3, column=0, sticky="ew", pady=(0, 5))
         self.progress_bar.set(0)
 
         from ..widgets.log_panel import LogPanel
-        self.log_panel = LogPanel(self)
+        self.log_panel = LogPanel(scroll)
         self.log_panel.grid(row=4, column=0, sticky="nsew")
 
     def _build_params(self) -> None:

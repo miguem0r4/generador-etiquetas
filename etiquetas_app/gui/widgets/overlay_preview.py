@@ -7,8 +7,8 @@ A4_H = 842
 
 
 class OverlayPreview(ctk.CTkFrame):
-    CANVAS_W = 220
-    CANVAS_H = 280
+    CANVAS_W = 180
+    CANVAS_H = 230
     PAD = 15
 
     def __init__(

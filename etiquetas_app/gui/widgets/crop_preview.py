@@ -4,8 +4,8 @@ import customtkinter as ctk
 
 
 class CropPreview(ctk.CTkFrame):
-    CANVAS_W = 200
-    CANVAS_H = 260
+    CANVAS_W = 180
+    CANVAS_H = 230
     PAD = 15
     PAGE_W = CANVAS_W - 2 * PAD
     PAGE_H = CANVAS_H - 2 * PAD
